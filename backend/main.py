@@ -1,21 +1,18 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from .build_manager import run_pipeline
+import os
 
 app = FastAPI()
 
-# Allow frontend to access backend
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],   # allow all (for project demo)
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Serve frontend
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
-@app.get("/")
-def home():
-    return {"message": "Backend is running"}
+@app.get("/", response_class=HTMLResponse)
+def serve_frontend():
+    with open("frontend/index.html") as f:
+        return f.read()
 
 @app.post("/run")
 def run_build():

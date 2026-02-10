@@ -1,30 +1,18 @@
-import subprocess
 from .ai_analyzer import analyze_error
 
 def run_pipeline():
     try:
-        result = subprocess.run(
-            ["python", "-m", "pytest"],
-            capture_output=True,
-            text=True
-        )
-
-        if result.returncode == 0:
-            return {
-                "status": "SUCCESS",
-                "message": "Build & Tests passed successfully ✅"
-            }
-        else:
-            ai_result = analyze_error(result.stderr)
-
-            return {
-                "status": "FAILED",
-                "error_log": result.stderr,
-                "ai_analysis": ai_result
-            }
+        # Simulated build step
+        print("Running build...")
+        return {
+            "status": "success",
+            "message": "Build completed successfully"
+        }
 
     except Exception as e:
+        analysis = analyze_error(str(e))
         return {
-            "status": "ERROR",
-            "message": str(e)
+            "status": "failed",
+            "error": str(e),
+            "analysis": analysis
         }

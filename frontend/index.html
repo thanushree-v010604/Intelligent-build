@@ -1,61 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Intelligent Build & Release Manager</title>
+    <title>Intelligent Build Manager</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background: #f4f6f8;
             text-align: center;
-            padding-top: 80px;
+            margin-top: 80px;
         }
         button {
-            padding: 15px 30px;
-            font-size: 18px;
-            cursor: pointer;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 8px;
-        }
-        #output {
-            margin-top: 30px;
+            padding: 12px 20px;
             font-size: 16px;
-            white-space: pre-wrap;
-            background: white;
-            padding: 20px;
-            width: 60%;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 30px;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
 
-    <h1>🚀 Intelligent Build & Release Manager</h1>
-    <button onclick="runBuild()">Run Build Pipeline</button>
+    <h1>Intelligent Build & Release Manager</h1>
 
-    <div id="output"></div>
+    <button onclick="runBuild()">Run Build</button>
+
+    <div id="result"></div>
 
     <script>
-        async function runBuild() {
-            document.getElementById("output").innerText = "Running build pipeline... ⏳";
+        function runBuild() {
+            document.getElementById("result").innerHTML = "Running build...";
 
-            try {
-                const response = await fetch("http://127.0.0.1:8000/run", {
-                    method: "POST"
-                });
+            fetch("/run", {
 
-                const data = await response.json();
-                document.getElementById("output").innerText =
-                    JSON.stringify(data, null, 2);
-            } catch (error) {
-                document.getElementById("output").innerText =
-                    "❌ Failed to connect to backend";
-            }
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerHTML =
+                    "Status: " + data.status + "<br>" +
+                    "Message: " + data.message;
+            })
+            .catch(error => {
+                document.getElementById("result").innerHTML =
+                    "Error connecting to backend";
+            });
         }
     </script>
 

@@ -1,35 +1,25 @@
-def analyze_error(error_text: str):
-    """
-    Simple AI-style error analysis (rule-based)
-    """
+def analyze_error(error_message: str):
+    error_message = error_message.lower()
 
-    error_text = error_text.lower()
-
-    if "assert" in error_text:
+    if "modulenotfounderror" in error_message:
         return {
-            "reason": "A test assertion failed",
-            "suggestion": "Check expected vs actual values in your test"
+            "issue": "Missing Python module",
+            "solution": "Install required package using pip install <package-name>"
         }
 
-    if "none" in error_text:
+    if "syntaxerror" in error_message:
         return {
-            "reason": "Function returned None",
-            "suggestion": "Ensure your function returns a value"
+            "issue": "Syntax error in code",
+            "solution": "Check brackets, colons, and indentation"
         }
 
-    if "syntaxerror" in error_text:
+    if "connection refused" in error_message:
         return {
-            "reason": "Python syntax error",
-            "suggestion": "Check brackets, colons, or indentation"
-        }
-
-    if "modulenotfounderror" in error_text:
-        return {
-            "reason": "Missing module or wrong import",
-            "suggestion": "Check file name and import path"
+            "issue": "Service not running",
+            "solution": "Ensure backend or database is running"
         }
 
     return {
-        "reason": "Unknown error",
-        "suggestion": "Check logs manually"
+        "issue": "Unknown error",
+        "solution": "Check logs and debug manually"
     }
