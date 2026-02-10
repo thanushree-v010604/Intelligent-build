@@ -1,3 +1,5 @@
-function showMessage() {
-    alert("Build and Release Pipeline Triggered!");
+function runPipeline() {
+    document.getElementById("output").innerHTML =
+        "✅ Build Successful!<br>🚀 Release Deployed Successfully!";
 }
+
